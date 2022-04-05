@@ -1,8 +1,8 @@
 class LocationReportsController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   def create
     car = Car.find_by(licence: create_params[:licence])
-
     report  = car.location_reports.create(
       latitude: create_params[:latitude],
       longitude: create_params[:longitude],
@@ -12,6 +12,6 @@ class LocationReportsController < ApplicationController
   end  
 
   def create_params
-    params.permit(:license, :latitude, :longitude, :device_id)
+    params.require(:location_report).permit(:licence, :latitude, :longitude, :device_id)
   end
 end
